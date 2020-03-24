@@ -18,7 +18,7 @@ class Trie:
             wordlist = f.readlines()
             for word in wordlist:
                 self.add(word.strip())
-        self.words = []  # store results
+        self.words = []
 
     def add(self, word):
         node = self.root
@@ -143,7 +143,6 @@ class Bot:
                 if game['current_player'] == local:
                     board = Board(game)
                     result = self.get_game(board.gameId)['game']
-                    # board.endgame = result['bag_count'] == 0
                     board.boardId = result['board']
                     if board.boardId not in Board.special_cells:
                         self.get_special_cells(board.boardId)
