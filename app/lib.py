@@ -68,13 +68,11 @@ class Board:
     points = {"A": 1, "B": 4, "C": 4, "D": 2, "E": 1, "F": 4, "G": 3, "H": 4, "I": 1, "J": 10, "K": 5, "L": 1, "M": 3, "N": 1, "O": 1, "P": 4, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 2, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10}
     empty_board = [['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_'], ['_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_', '_']]
     special_cells = {0: { 0: "TL", 14: "TL", 210: "TL", 224: "TL", 4: "TW", 7: "DL", 10: "TW", 16: "DL", 20: "TL", 60: "TW", 105: "DL", 150: "TW", 76: "TL", 136: "TL", 92: "DL", 122: "DL", 108: "DW", 94: "DL", 124: "DL", 154: "DW", 36: "DL", 66: "DL", 156: "DL", 217: "DL", 188: "DL", 204: "TL", 56: "TL", 164: "TW", 192: "DW", 132: "DL", 52: "DW", 80: "TL", 196: "DL", 182: "DW", 168: "TL", 214: "TW", 200: "TL", 160: "DW", 119: "DL", 32: "DW", 48: "TL", 64: "DW", 140: "TL", 172: "DW", 186: "DL", 220: "TW", 158: "DL", 144: "TL", 176: "TL", 208: "DL", 130: "DL", 116: "DW", 148: "TL", 100: "DL", 102: "DL", 84: "TL", 68: "DL", 70: "DW", 42: "DW", 28: "DL", 88: "TL", 74: "TW", 38: "DL", 24: "TL"}}
-    # count = {"A": 10, "B": 2, "C": 2, "D": 5, "E": 12, "F": 2, "G": 3, "H": 3, "I": 9, "J": 1, "K": 1, "L": 4, "M": 2, "N": 6, "O": 7, "P": 2, "Q": 1, "R": 6, "S": 5, "T": 7, "U": 4, "V": 2, "W": 2, "X": 1, "Y": 2, "Z": 1}
 
     def __init__(self, game):
         self.gameId = game['id']
         self.board = deepcopy(self.empty_board)
         self.letters = {}
-        # self.letter_count = deepcopy(self.count)
         self.save_rack(game)
         self.boardId = 0
         self.move_count = game['move_count']
@@ -82,7 +80,6 @@ class Board:
     def load_board(self, tiles):
         for tile in tiles:
             self.board[tile[1]][tile[0]] = tile[2]
-            # if not tile[3]: self.letter_count[tile[2]] -= 1
 
     def save_rack(self, game):
         local = 0 if game['players'][0]['is_local'] else 1
@@ -92,7 +89,6 @@ class Board:
                 self.letters[letter] += 1
             else:
                 self.letters[letter] = 1
-            # if letter != '': self.letter_count[letter] -= 1
 
 class Bot:
     def __init__(self, email, password):
@@ -390,22 +386,6 @@ class Bot:
                     best_moves = self.get_first_moves(board.letters, board.boardId)
                 else:
                     best_moves = self.get_best_moves(board.board, board.letters, board.boardId)
-                    # if board.endgame: # at attempt at endgame minimax, not as useful since the endgame is too short
-                    #     top = []
-                    #     for word in best_moves[:25]:
-                    #         board_copy = deepcopy(board)
-                    #         if word[1][2]:
-                    #             for i in range(len(word[1][0])):
-                    #                 board_copy.board[word[1][1][0]][word[1][1][1] + i] = word[1][0][i]
-                    #         else:
-                    #             for i in range(len(word[1][0])):
-                    #                 board_copy.board[word[1][1][0] + i][word[1][1][1]] = word[1][0][i]
-                    #         try:
-                    #             best_opponent_move = self.get_best_moves(board_copy.board, board.letter_count, board.boardId)[0][0]
-                    #         except IndexError:
-                    #             best_opponent_move = 0
-                    #         top.append((word[0] - best_opponent_move, word[1]))
-                    #     best_moves = sorted(top, key=lambda x: x[0], reverse = True)
                 placed = False
                 for i in range(50):
                     try:
